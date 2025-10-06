@@ -1,0 +1,182 @@
+.social-services-section {
+    background-color: #F9FAFB;
+    padding: 80px 0;
+}
+
+.services-main-title {
+    font-size: 3rem !important; 
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.services-gradient-title {
+    background: linear-gradient(to right, #8B5CF6, #EC4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: block;
+}
+
+.services-intro-text {
+    font-size: 1.125rem;
+    color: #6B7280;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.services-benefits-list {
+    margin-top: 24px;
+}
+
+.benefit-item-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.benefit-indicator {
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(to right, #8B5CF6, #EC4899);
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.benefit-description {
+    color: #374151;
+    font-size: 1rem;
+}
+
+/* Platform Cards */
+.platform-card {
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: all 0.3s ease;
+    height: 100%;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.platform-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: scale(1.05);
+}
+
+.platform-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
+}
+
+.platform-card:hover .platform-icon-wrapper {
+    transform: scale(1.1);
+}
+
+.platform-symbol {
+    font-size: 32px;
+    color: white;
+}
+
+.platform-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.platform-features {
+    color: #6B7280;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Instagram Platform */
+.instagram-platform-bg {
+    background: linear-gradient(to bottom right, #FDF2F8, #FAF5FF);
+}
+
+.instagram-icon-bg {
+    background: linear-gradient(to right, #EC4899, #8B5CF6);
+}
+
+/* Facebook Platform */
+.facebook-platform-bg {
+    background: linear-gradient(to bottom right, #EFF6FF, #E0E7FF);
+}
+
+.facebook-icon-bg {
+    background: linear-gradient(to right, #1877F2, #1E40AF);
+}
+
+/* TikTok Platform */
+.tiktok-platform-bg {
+    background: linear-gradient(to bottom right, #F9FAFB, #F1F5F9);
+}
+
+.tiktok-icon-bg {
+    background: linear-gradient(to right, #000000, #1F2937);
+}
+
+/* YouTube Platform */
+.youtube-platform-bg {
+    background: linear-gradient(to bottom right, #FEF2F2, #FDF2F8);
+}
+
+.youtube-icon-bg {
+    background: linear-gradient(to right, #EF4444, #DC2626);
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    .services-main-title {
+        font-size: 3.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .services-main-title {
+        font-size: 3.75rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .social-services-section {
+        padding: 60px 0;
+    }
+
+    .services-main-title {
+        font-size: 2.5rem;
+    }
+
+    .platform-card {
+        padding: 24px 20px;
+    }
+
+    .platform-icon-wrapper {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 16px;
+    }
+
+    .platform-symbol {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .services-main-title {
+        font-size: 2.25rem;
+    }
+
+    .platform-card {
+        padding: 20px 16px;
+    }
+}
