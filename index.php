@@ -18,9 +18,9 @@
     
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container"> SocialGrowth    
+        <div class="container">  
             <a class="navbar-brand" href="#">
-                <i class="fas fa-chart-line"></i> There growth
+                <i class="fas fa-chart-line"></i> SocialGrowth
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
