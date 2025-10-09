@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags for responsiveness and character encoding -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Monthly Package - InstaPro</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS Link -->
+    <link rel="stylesheet" href="../../assets/css/services_content.css">
+</head>
+
+<body>
+
+    <div class="page-header">
+        <h1># Post Monthly Package</h1>
+        <p>Influencers Growth Services > Instagram > # Post Blogger Package</p>
+    </div>
+
+    <!-- ===== MAIN PRODUCT SECTION ===== -->
+    <div class="product-container">
+        <div class="row">
+            <!-- ===== LEFT COLUMN: PRODUCT IMAGE ===== -->
+            <div class="col-lg-5 col-md-6 mb-4">
+                <div class="product-image-section">
+                    <!-- Image wrapper with magnify effect -->
+                    <div class="product-image-wrapper" id="imageWrapper">
+                        <!-- Product image (can be changed) -->
+                        <img id="productImage"
+                            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect fill='%23ff1493' width='300' height='300'/%3E%3Ctext x='50%25' y='30%25' font-size='40' fill='white' text-anchor='middle' dominant-baseline='middle'%3E📱%3C/text%3E%3Ctext x='50%25' y='55%25' font-size='30' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EPOSTS%3C/text%3E%3Ctext x='50%25' y='70%25' font-size='30' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3EMONTHLY PACKAGE%3C/text%3E%3Ctext x='50%25' y='85%25' font-size='50' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold'%3E1000%3C/text%3E%3C/svg%3E"
+                            alt="Post Monthly Package">
+
+                        <!-- File input for uploading custom image -->
+                        <input type="file" id="imageInput" accept="image/*">
+                        <label for="imageInput" class="image-upload-label">
+                            <i class="fas fa-upload"></i> Upload Image
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN: PRODUCT DETAILS ===== -->
+            <div class="col-lg-7 col-md-6">
+                <!-- Product details card -->
+                <div class="product-details">
+                    <!-- Rating section -->
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="rating-count">(2 customer reviews)</span>
+                    </div>
+
+                    <!-- Product title -->
+                    <h2 class="product-title"># Post Monthly Package</h2>
+
+                    <!-- Product description -->
+                    <p class="product-description">+1000 post Reach and impressions / Month</p>
+
+                    <!-- Product price -->
+                    <div class="product-price">$35</div>
+
+                    <!-- Features list -->
+                    <div class="features-list">
+                        <!-- Feature 1: Fast Delivery -->
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>FAST DELIVERY</h5>
+                                <p>We start processing your order as soon as you complete the payment. Your order will
+                                    be completed within the estimated delivery time that we show on the services.</p>
+                            </div>
+                        </div>
+
+                        <!-- Feature 2: No Risk of Decrease -->
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>NO RISK OF DECREASE</h5>
+                                <p>The services that you buy will be permanent, and there won't be any decrease.
+                                    Otherwise, we guarantee it and we will refill your losses in no months after paid.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Feature 3: Refund Guarantee -->
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-undo"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>REFUND GUARANTEE</h5>
+                                <p>We guarantee a refund for your order if we can't deliver it within the estimated
+                                    delivery time (if it is more than three days). For more details, please read our
+                                    Refund Policy.</p>
+                            </div>
+                        </div>
+
+                        <!-- Feature 4: 24/7 Support -->
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>24/7 SUPPORT</h5>
+                                <p>We provide 24/7 live customer support. You can contact us anytime via our messengers
+                                    system, WhatsApp, and email address. Our staff is always ready to help you.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product controls (quantity selector and add to cart) -->
+                    <div class="product-controls">
+                        <!-- Quantity selector -->
+                        <div class="quantity-selector">
+                            <button class="quantity-btn" id="decreaseBtn">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" class="quantity-input" id="quantityInput" value="1" min="1">
+                            <button class="quantity-btn" id="increaseBtn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- Add to cart button -->
+                        <!-- <button class="btn-add-to-cart" onclick="addToCart()">
+                            <i class="fas fa-shopping-cart"></i> Add to cart
+                        </button> -->
+                        <a href="cart_details.html" class="btn-add-to-cart text-decoration-none">
+                            <i class="fas fa-shopping-cart"></i> Add to cart
+                        </a>
+                    </div>
+
+                    <!-- Share section -->
+                    <div class="share-section">
+                        <span class="share-label">Share:</span>
+                        <button class="share-btn" onclick="shareOnFacebook()">
+                            <i class="fab fa-facebook"></i> Share on Facebook
+                        </button>
+                        <button class="share-btn" onclick="shareOnTwitter()">
+                            <i class="fab fa-twitter"></i> Share on X
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TABS SECTION: DESCRIPTION AND REVIEWS ===== -->
+        <div class="tabs-section">
+            <!-- Tab navigation -->
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <!-- Description tab -->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                        data-bs-target="#description" type="button" role="tab" aria-controls="description"
+                        aria-selected="true">
+                        Description
+                    </button>
+                </li>
+                <!-- Reviews tab -->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                        type="button" role="tab" aria-controls="reviews" aria-selected="false">
+                        Reviews (2)
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab content -->
+            <div class="tab-content" id="productTabsContent">
+                <!-- ===== DESCRIPTION TAB ===== -->
+                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                    aria-labelledby="description-tab">
+                    <div class="description-section">
+                        <!-- Why Should You Buy Instagram Impressions -->
+                        <h3>✓ Why Should You Buy Instagram Impressions?</h3>
+                        <p>Instagram impressions are a key metric that shows how many times your content has been
+                            viewed, regardless of whether it was clicked or not. For influencers, businesses, and
+                            content creators, high impressions signal to the algorithm that your content is engaging and
+                            relevant. When you achieve a high number of impressions, Instagram is more likely to promote
+                            your posts, making them more visible to a broader audience. This way, you can reach more
+                            people and enhance your presence on the platform.</p>
+
+                        <!-- What Are Instagram Impressions -->
+                        <h3>✓ What Are Instagram Impressions?</h3>
+                        <p>An Instagram impression occurs each time someone interacts with your profile or posts. These
+                            interactions signal to the algorithm that your account is valuable and worthy of
+                            recommendations and featured placements. Therefore, the impressions you receive, the greater
+                            your exposure, impressions also signal credibility and authenticity, which is essential for
+                            building a strong following and increasing engagement on your posts.</p>
+
+                        <!-- How Long Will It Take to Get My Impressions -->
+                        <h3>✓ How Long Will It Take to Get My Impressions?</h3>
+                        <p>When you buy Instagram impressions, we begin processing your order right away. It will be
+                            completed within the estimated delivery time indicated on our service page.</p>
+
+                        <!-- Difference Between Reach and Impression -->
+                        <h3>✓ Difference Between Reach and Impression?</h3>
+                        <p>Reach refers to the number of unique individuals who see your content, while impressions
+                            denote the total number of times your content is viewed. For example, if one person sees
+                            your post three times, that counts as one reach but three impressions.</p>
+                    </div>
+                </div>
+
+                <!-- ===== REVIEWS TAB ===== -->
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <div class="reviews-section">
+                        <!-- Review 1 -->
+                        <div class="review-card">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">D</div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name">Donald</div>
+                                    <div class="review-date">June 22, 2024</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="review-text">The $35 Post Monthly Package is excellent! I get 1000 post reach and
+                                impressions every month. Fast delivery and permanent results with no risk of decrease.
+                                Trust the 24/7 support is very helpful.</p>
+                        </div>
+
+                        <!-- Review 2 -->
+                        <div class="review-card">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar">D</div>
+                                <div class="reviewer-details">
+                                    <div class="reviewer-name">Donna Theis</div>
+                                    <div class="review-date">June 14, 2024</div>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <p class="review-text">This $35 Post Monthly Package is fantastic! You get 1000 post reach
+                                and impressions every month, helping your posts reach a wider audience. Combined with no
+                                risk of decrease, their 24/7 customer support is amazing. Highly recommend for boosting
+                                your Instagram!</p>
+                        </div>
+                    </div>
+
+                    <!-- Add Review Form -->
+                    <div class="review-form">
+                        <h4>Add a review</h4>
+                        <p style="color: #90a4ae; margin-bottom: 20px;">Your email address will not be published.</p>
+
+                        <!-- Name field -->
+                        <div class="form-group">
+                            <label for="reviewName">Name *</label>
+                            <input type="text" class="form-control" id="reviewName" placeholder="Your name" required>
+                        </div>
+
+                        <!-- Email field -->
+                        <div class="form-group">
+                            <label for="reviewEmail">Email *</label>
+                            <input type="email" class="form-control" id="reviewEmail" placeholder="your@email.com"
+                                required>
+                        </div>
+
+                        <!-- Star rating -->
+                        <div class="form-group">
+                            <label>Your rating *</label>
+                            <div class="star-rating" id="starRating">
+                                <i class="fas fa-star" data-value="1"></i>
+                                <i class="fas fa-star" data-value="2"></i>
+                                <i class="fas fa-star" data-value="3"></i>
+                                <i class="fas fa-star" data-value="4"></i>
+                                <i class="fas fa-star" data-value="5"></i>
+                            </div>
+                        </div>
+
+                        <!-- Review text -->
+                        <div class="form-group">
+                            <label for="reviewText">Your review *</label>
+                            <textarea class="form-control" id="reviewText" rows="5" placeholder="Write your review"
+                                required></textarea>
+                        </div>
+
+                        <!-- Checkbox for saving info -->
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <input type="checkbox" id="saveInfo" style="margin-right: 10px;">
+                            <label for="saveInfo" style="display: inline; margin: 0; color: #90a4ae;">Save my name,
+                                email, and website in this browser for the next time I comment.</label>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button class="btn-submit" onclick="submitReview()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== RELATED PRODUCTS ===== -->
+        <div class="related-products">
+            <h3>Related Products</h3>
+            <div class="row">
+                <!-- Product Card 1 -->
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <div class="product-card">
+                        <div class="product-card-image">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="product-card-content">
+                            <h5 class="product-card-title">Buy 3000 Real Views - ELITE Package</h5>
+                            <div class="product-card-price">$45</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <div class="product-card">
+                        <div class="product-card-image">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="product-card-content">
+                            <h5 class="product-card-title">Buy 2000 Instagram Followers, Real and Instant - Silver...
+                            </h5>
+                            <div class="product-card-price">$65</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <div class="product-card">
+                        <div class="product-card-image">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="product-card-content">
+                            <h5 class="product-card-title">Buy Real Instagram Followers, Likes, And Views - Ultimate...
+                            </h5>
+                            <div class="product-card-price">$199</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                    <div class="product-card">
+                        <div class="product-card-image">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="product-card-content">
+                            <h5 class="product-card-title">Buy 5000 Likes, 1000 Views, 500 Real Active Instagram...</h5>
+                            <div class="product-card-price">$299</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SHARE YOUR THOUGHTS SECTION ===== -->
+    <div
+        style="background: rgba(255, 255, 255, 0.03); border-top: 1px solid rgba(0, 188, 212, 0.2); padding: 60px 20px; text-align: center; margin-top: 60px;">
+        <h3 style="color: #ffffff; margin-bottom: 15px; font-weight: 700;">Share Your Thoughts</h3>
+        <p style="color: #b0bec5;">We value your feedback! Help us improve your experience by sharing your thoughts on
+            our website's services and tools in the "Submit Review" section.</p>
+    </div>
+
+
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ===== QUANTITY SELECTOR FUNCTIONALITY =====
+        // Get quantity input and buttons
+        const quantityInput = document.getElementById('quantityInput');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+
+        // Increase quantity
+        increaseBtn.addEventListener('click', function () {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        });
+
+        // Decrease quantity (minimum 1)
+        decreaseBtn.addEventListener('click', function () {
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+
+        // ===== IMAGE UPLOAD FUNCTIONALITY =====
+        // Get image input and wrapper
+        const imageInput = document.getElementById('imageInput');
+        const productImage = document.getElementById('productImage');
+
+        // Handle image upload
+        imageInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Create file reader to display image
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    // Update product image with uploaded image
+                    productImage.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ===== STAR RATING FUNCTIONALITY =====
+        // Get all star rating elements
+        const stars = document.querySelectorAll('#starRating i');
+        let selectedRating = 0;
+
+        // Add click event to each star
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                selectedRating = this.getAttribute('data-value');
+                // Update all stars up to clicked star
+                stars.forEach(s => {
+                    if (s.getAttribute('data-value') <= selectedRating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // ===== CART FUNCTIONALITY =====
+        // Add to cart function
+        function addToCart() {
+            const quantity = quantityInput.value;
+            alert(`✓ Added ${quantity} item(s) to cart!\n\nThis is a demo. Implement your cart logic here.`);
+        }
+
+        // ===== REVIEW SUBMISSION =====
+        // Submit review function
+        function submitReview() {
+            const name = document.getElementById('reviewName').value;
+            const email = document.getElementById('reviewEmail').value;
+            const rating = selectedRating;
+            const review = document.getElementById('reviewText').value;
+
+            // Validate form
+            if (!name || !email || !rating || !review) {
+                alert('Please fill all required fields!');
+                return;
+            }
+
+            // Show success message
+            alert(`✓ Thank you for your review, ${name}!\n\nYour review has been submitted successfully.`);
+
+            // Clear form
+            document.getElementById('reviewName').value = '';
+            document.getElementById('reviewEmail').value = '';
+            document.getElementById('reviewText').value = '';
+            stars.forEach(s => s.classList.remove('active'));
+            selectedRating = 0;
+        }
+
+        // ===== SHARE FUNCTIONALITY =====
+        // Share on Facebook
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+
+        // Share on Twitter/X
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent('Check out this amazing Instagram Package!');
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+    </script>
+</body>
+
+</html>
