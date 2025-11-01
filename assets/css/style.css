@@ -72,91 +72,12 @@ body::before {
     z-index: 0;
 }
 
-/* ============================================
-   3. ENHANCED NAVIGATION
-============================================ */
-.navbar {
-    background: rgba(10, 22, 40, 0.85);
-    backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 1.2rem 0;
-    transition: var(--transition-base);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.navbar-brand {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--text-white) !important;
-    letter-spacing: -0.5px;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    transition: var(--transition-fast);
-}
-
-.navbar-brand:hover {
-    transform: scale(1.02);
-}
-
-.navbar-brand i {
-    color: var(--cyan-primary);
-    font-size: 1.6rem;
-}
-
-.nav-link {
-    color: var(--text-light-gray) !important;
-    font-weight: 500;
-    font-size: 0.95rem;
-    margin: 0 0.8rem;
-    padding: 0.5rem 0 !important;
-    position: relative;
-    transition: var(--transition-fast);
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--cyan-primary);
-    transition: width 0.3s ease;
-}
-
-.nav-link:hover {
-    color: var(--cyan-primary) !important;
-}
-
-.nav-link:hover::after {
-    width: 100%;
-}
-
-.btn-primary-custom {
-    background: linear-gradient(135deg, var(--cyan-primary) 0%, #00a8cc 100%);
-    color: var(--bg-primary);
-    padding: 0.65rem 1.8rem;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    border: none;
-    transition: var(--transition-base);
-    text-decoration: none;
-    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-}
-
-.btn-primary-custom:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
-    background: linear-gradient(135deg, #00e5ff 0%, #00b8d4 100%);
-}
 
 /* ============================================
    4. HERO SECTION - PREMIUM DESIGN
 ============================================ */
 .hero-section {
-    padding: 140px 0 100px;
+    padding: 120px 0 100px;
     position: relative;
     z-index: 1;
 }
@@ -1486,3 +1407,4 @@ input:focus,
         page-break-inside: avoid;
     }
 }
+

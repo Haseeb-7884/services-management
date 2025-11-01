@@ -6,7 +6,7 @@ class backend
     private $server = "localhost";
     private $username = "root";
     private $psw = "";
-    private $database = "mcqs_database";
+    private $database = "digiscale";
     private $mysql;
     private $conn = false;
     private $result = [];
@@ -121,6 +121,7 @@ class backend
             return "Error deleting record: " . $this->mysql->error;
         }
     }
+
 } // class end here
 
 function imagehandling($img)
@@ -136,6 +137,3 @@ function imagehandling($img)
         'img_name' => $img_name
     );
 }
-
-
-?>

@@ -1,0 +1,111 @@
+
+/* Custom Navbar Background - Deep Navy Blue */
+.sg-navbar-custom {
+    background-color: #0a1628 !important;
+    padding: 1rem 2.5rem;
+}
+
+/* Brand Logo Container Styling */
+.sg-brand-wrapper {
+    color: #ffffff !important;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* Logo Icon - Blue Gradient Background */
+.sg-logo-icon {
+    background: linear-gradient(135deg, #00d4ff, #0099ff);
+    color: #ffffff;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+/* Navigation Links - Muted White Color and Bold */
+.sg-nav-links .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    margin: 0 0.3rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+/* Navigation Link Hover Effect */
+.sg-nav-links .nav-link:hover {
+    color: rgba(255, 255, 255, 1) !important;
+}
+
+/* Cart Icon Wrapper with Position Relative */
+.sg-cart-wrapper {
+    position: relative;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.3rem;
+    margin: 0 1rem;
+    cursor: pointer;
+}
+
+/* Red Notification Badge on Cart */
+.sg-cart-notification {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* My Account Dropdown Toggle Button */
+.sg-account-toggle {
+    color: rgba(255, 255, 255, 0.85) !important;
+    background: transparent !important;
+    border: none !important;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+/* Remove Default Dropdown Arrow and Add Custom */
+.sg-account-toggle::after {
+    margin-left: 0.5rem;
+}
+
+/* Dropdown Menu Custom Styling */
+.sg-dropdown-menu {
+    background-color: #1a2942;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    min-width: 180px;
+}
+
+/* Dropdown Items Styling */
+.sg-dropdown-menu .dropdown-item {
+    color: rgba(255, 255, 255, 0.85);
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+/* Dropdown Item Hover Effect */
+.sg-dropdown-menu .dropdown-item:hover {
+    background-color: rgba(0, 212, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Mobile Toggler Button Styling */
+.sg-navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile Toggler Icon Color */
+.sg-navbar-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}

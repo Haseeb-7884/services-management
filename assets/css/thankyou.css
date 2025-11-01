@@ -1,0 +1,350 @@
+/* Global Styles - Dark Theme Background */
+body {
+    background-color: #0a0e1a;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+/* Main Container - Increased width for large screens */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Success Icon and Header Section */
+.success-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.success-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.success-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+.success-text h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: #ffffff;
+}
+
+.success-text p {
+    font-size: 14px;
+    color: #9ca3af;
+    margin: 5px 0 0 0;
+}
+
+/* Info Cards Grid - Order Number, Date, Total, Payment */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.info-card {
+    background-color: #151b2e;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.info-card-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.info-card-label i {
+    font-size: 14px;
+    color: #3b82f6;
+}
+
+.info-card-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Order Details Section */
+.details-section {
+    background-color: #151b2e;
+    border: 1px solid #1f2937;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+/* Product Table Header */
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #1f2937;
+    margin-bottom: 15px;
+}
+
+.product-header span {
+    font-size: 13px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Product Item */
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #1f2937;
+}
+
+.product-name {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.product-price {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* Subtotal and Total Rows */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.summary-row.total {
+    border-top: 1px solid #1f2937;
+    margin-top: 5px;
+    padding-top: 15px;
+}
+
+.summary-label {
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+.summary-value {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.summary-row.total .summary-value {
+    font-size: 16px;
+}
+
+/* Payment Method Row */
+.payment-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-top: 1px solid #1f2937;
+    margin-top: 5px;
+}
+
+.payment-label {
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+.payment-value {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+/* Billing Address Section */
+.billing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.billing-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.billing-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #1f2937;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.billing-icon i {
+    color: #3b82f6;
+    font-size: 16px;
+}
+
+.billing-content {
+    flex: 1;
+}
+
+.billing-label {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+
+.billing-value {
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Feedback Section */
+.feedback-description {
+    font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-control {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    color: #ffffff;
+    padding: 12px 15px;
+    font-size: 14px;
+}
+
+.form-control:focus {
+    background-color: #1f2937;
+    border-color: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+.form-control::placeholder {
+    color: #6b7280;
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Submit Button */
+.btn-submit {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #2563eb;
+}
+
+/* Made in Bolt Badge */
+.bolt-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Responsive Styles for Mobile Devices */
+@media (max-width: 768px) {
+    .success-header {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .success-text h1 {
+        font-size: 20px;
+    }
+
+    .info-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .details-section {
+        padding: 20px 15px;
+    }
+
+    .billing-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .success-icon {
+        width: 45px;
+        height: 45px;
+    }
+
+    .success-text h1 {
+        font-size: 18px;
+    }
+
+    .bolt-badge {
+        bottom: 15px;
+        right: 15px;
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}

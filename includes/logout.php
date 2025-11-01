@@ -5,6 +5,6 @@ session_start();
 session_unset();
 session_destroy();
 
-header("location: ../website/modules/login/login.php");
+header("location: ../includes/pages/logins/login.php");
 
 ?>
