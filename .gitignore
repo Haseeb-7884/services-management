@@ -1,0 +1,10 @@
+# Root - client/ and server/ have their own more specific .gitignore too
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+uploads/

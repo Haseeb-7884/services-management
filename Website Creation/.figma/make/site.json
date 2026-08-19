@@ -1,0 +1,10 @@
+{
+  "description": "Streamlines website creation by generating tailored site designs from user prompts, enabling efficient and customized web development for all users.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

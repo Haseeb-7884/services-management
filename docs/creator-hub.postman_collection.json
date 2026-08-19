@@ -1,0 +1,513 @@
+{
+  "info": {
+    "name": "Creator Hub API",
+    "description": "Full REST API for the Creator Hub MERN platform. Base URL: {{baseUrl}} (default http://localhost:5000/api/v1). Login or Register first — the accessToken collection variable is set automatically from the response so every other request authenticates itself.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api/v1" },
+    { "key": "accessToken", "value": "" },
+    { "key": "username", "value": "usman" },
+    { "key": "videoId", "value": "" },
+    { "key": "imageId", "value": "" },
+    { "key": "articleId", "value": "" },
+    { "key": "conversationId", "value": "" },
+    { "key": "notificationId", "value": "" },
+    { "key": "planId", "value": "" },
+    { "key": "commentId", "value": "" },
+    { "key": "targetUsername", "value": "someoneelse" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": { "method": "GET", "url": "{{baseUrl}}/health", "auth": { "type": "noauth" } }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', body.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newcreator\",\n  \"email\": \"newcreator@example.com\",\n  \"password\": \"password123\",\n  \"displayName\": \"New Creator\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', body.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emailOrUsername\": \"usman\",\n  \"password\": \"YOUR_OWNER_PASSWORD\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh token",
+          "request": { "method": "POST", "url": "{{baseUrl}}/auth/refresh", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Logout",
+          "request": { "method": "POST", "url": "{{baseUrl}}/auth/logout", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get current user (me)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/auth/me" }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get profile by username",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{username}}", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "List followers",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{username}}/followers", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "List following",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{username}}/following", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get channel content",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/{{username}}/content?type=all&page=1&limit=24",
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Update my profile",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/users/me",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Usman\",\n  \"bio\": \"Building Creator Hub.\",\n  \"tagline\": \"Shipping every day\",\n  \"category\": \"Technology\",\n  \"socialLinks\": {\n    \"website\": \"https://example.com\",\n    \"twitter\": \"https://x.com/example\",\n    \"instagram\": \"\",\n    \"youtube\": \"\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Upload my avatar",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/me/avatar",
+            "body": { "mode": "formdata", "formdata": [{ "key": "avatar", "type": "file", "src": "" }] }
+          }
+        },
+        {
+          "name": "Upload my cover photo",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/me/cover",
+            "body": { "mode": "formdata", "formdata": [{ "key": "cover", "type": "file", "src": "" }] }
+          }
+        },
+        {
+          "name": "Follow user",
+          "request": { "method": "POST", "url": "{{baseUrl}}/users/{{username}}/follow" }
+        },
+        {
+          "name": "Unfollow user",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/users/{{username}}/follow" }
+        }
+      ]
+    },
+    {
+      "name": "Videos",
+      "item": [
+        {
+          "name": "List videos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/videos?page=1&limit=20",
+              "host": ["{{baseUrl}}"], "path": ["videos"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }, { "key": "category", "value": "", "disabled": true }, { "key": "tag", "value": "", "disabled": true }, { "key": "search", "value": "", "disabled": true }]
+            },
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Get video by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/videos/{{videoId}}", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Upload video",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/videos",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "video", "type": "file", "src": "" },
+                { "key": "title", "value": "My first upload", "type": "text" },
+                { "key": "description", "value": "Uploaded via Postman", "type": "text" },
+                { "key": "category", "value": "general", "type": "text" },
+                { "key": "tags", "value": "demo,postman", "type": "text" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete video",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/videos/{{videoId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "item": [
+        {
+          "name": "List images",
+          "request": { "method": "GET", "url": "{{baseUrl}}/images?page=1&limit=24", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get image by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/images/{{imageId}}", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Upload image",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/images",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "image", "type": "file", "src": "" },
+                { "key": "caption", "value": "Uploaded via Postman", "type": "text" },
+                { "key": "category", "value": "general", "type": "text" },
+                { "key": "tags", "value": "demo,postman", "type": "text" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete image",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/images/{{imageId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "List articles",
+          "request": { "method": "GET", "url": "{{baseUrl}}/articles?page=1&limit=20", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get article by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/articles/{{articleId}}", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Create article",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/articles",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "cover", "type": "file", "src": "", "disabled": true },
+                { "key": "title", "value": "My first article", "type": "text" },
+                { "key": "excerpt", "value": "A short summary", "type": "text" },
+                { "key": "body", "value": "Full article body text goes here.", "type": "text" },
+                { "key": "category", "value": "general", "type": "text" },
+                { "key": "tags", "value": "demo,postman", "type": "text" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete article",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/articles/{{articleId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Social (likes & comments)",
+      "item": [
+        {
+          "name": "Toggle like",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/social/likes",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"targetType\": \"Video\",\n  \"targetId\": \"{{videoId}}\"\n}" }
+          }
+        },
+        {
+          "name": "List comments for a target",
+          "request": { "method": "GET", "url": "{{baseUrl}}/social/comments/Video/{{videoId}}", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Add comment",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/social/comments",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"targetType\": \"Video\",\n  \"targetId\": \"{{videoId}}\",\n  \"body\": \"Great video!\"\n}" }
+          }
+        },
+        {
+          "name": "Delete comment",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/social/comments/{{commentId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List my notifications",
+          "request": { "method": "GET", "url": "{{baseUrl}}/notifications?page=1&limit=20" }
+        },
+        {
+          "name": "Mark one notification read",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/notifications/{{notificationId}}/read" }
+        },
+        {
+          "name": "Mark all notifications read",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/notifications/read-all" }
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "List my conversations",
+          "request": { "method": "GET", "url": "{{baseUrl}}/messages" }
+        },
+        {
+          "name": "Get or create conversation",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/messages",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"someoneelse\"\n}" }
+          }
+        },
+        {
+          "name": "List messages in conversation",
+          "request": { "method": "GET", "url": "{{baseUrl}}/messages/{{conversationId}}/messages?page=1&limit=50" }
+        },
+        {
+          "name": "Send message",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/messages/{{conversationId}}/messages",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"body\": \"Hey there!\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscription Plans",
+      "item": [
+        {
+          "name": "List active plans",
+          "request": { "method": "GET", "url": "{{baseUrl}}/plans", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get plan by slug",
+          "request": { "method": "GET", "url": "{{baseUrl}}/plans/premium", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Create plan (owner only)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/plans",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Studio\",\n  \"slug\": \"studio\",\n  \"monthly\": 79,\n  \"yearly\": 59,\n  \"description\": \"For small teams.\",\n  \"features\": [{ \"text\": \"Unlimited storage\", \"included\": true }],\n  \"cta\": \"Contact sales\",\n  \"highlight\": false,\n  \"order\": 4\n}"
+            }
+          }
+        },
+        {
+          "name": "Update plan (owner only)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/plans/{{planId}}",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"monthly\": 89\n}" }
+          }
+        },
+        {
+          "name": "Deactivate plan (owner only)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/plans/{{planId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Discovery / Feed",
+      "item": [
+        {
+          "name": "Get combined feed (public)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/feed?type=all&page=1&limit=12",
+            "auth": { "type": "noauth" }
+          }
+        },
+        {
+          "name": "Get trending rail (public)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/feed/trending?limit=10", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get featured creators (public)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/feed/creators?limit=8", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Get platform stats (public)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/feed/stats", "auth": { "type": "noauth" } }
+        }
+      ]
+    },
+    {
+      "name": "Creator Dashboard",
+      "item": [
+        {
+          "name": "Get dashboard stats",
+          "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/stats" }
+        },
+        {
+          "name": "List my content (all types)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/dashboard/content" }
+        }
+      ]
+    },
+    {
+      "name": "Admin / Owner",
+      "item": [
+        {
+          "name": "Get admin stats (Moderator+)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/admin/stats" }
+        },
+        {
+          "name": "List users (Admin+)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/admin/users?page=1&limit=20"
+          }
+        },
+        {
+          "name": "Grant Creator (Admin+)",
+          "request": { "method": "POST", "url": "{{baseUrl}}/admin/users/{{targetUsername}}/creator" }
+        },
+        {
+          "name": "Revoke Creator (Admin+)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/admin/users/{{targetUsername}}/creator" }
+        },
+        {
+          "name": "Promote to Admin (Owner only)",
+          "request": { "method": "POST", "url": "{{baseUrl}}/admin/users/{{targetUsername}}/admin" }
+        },
+        {
+          "name": "Revoke Admin (Owner only)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/admin/users/{{targetUsername}}/admin" }
+        },
+        {
+          "name": "List pending content queue (Moderator+)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/admin/content/pending?type=all&page=1&limit=20" }
+        },
+        {
+          "name": "Approve content (Moderator+)",
+          "request": { "method": "POST", "url": "{{baseUrl}}/admin/content/video/{{videoId}}/approve" }
+        },
+        {
+          "name": "Reject content (Moderator+)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/admin/content/video/{{videoId}}/reject",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Doesn't meet content guidelines\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Site Config / Branding",
+      "item": [
+        {
+          "name": "Get branding (public)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/config/branding", "auth": { "type": "noauth" } }
+        },
+        {
+          "name": "Update branding (owner only)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/config/branding",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"siteName\": \"Creator Hub\",\n  \"theme\": {\n    \"colors\": {\n      \"primary\": \"#0891b2\"\n    }\n  }\n}" }
+          }
+        },
+        {
+          "name": "Upload logo (owner only)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/config/branding/logo",
+            "body": { "mode": "formdata", "formdata": [{ "key": "logo", "type": "file", "src": "" }] }
+          }
+        },
+        {
+          "name": "Upload favicon (owner only)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/config/branding/favicon",
+            "body": { "mode": "formdata", "formdata": [{ "key": "favicon", "type": "file", "src": "" }] }
+          }
+        }
+      ]
+    }
+  ]
+}
