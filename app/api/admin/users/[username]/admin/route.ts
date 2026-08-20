@@ -15,6 +15,15 @@ type Ctx = { params: Promise<{ username: string }> };
 // no route to promote/revoke Super Admin itself - Owner is the single,
 // fixed top authority (it already carries every Super Admin permission and
 // more), not a role that gets assigned to other people.
+// Every route here hits a live database (and most require auth via
+// cookies/headers) - force dynamic so Next.js never tries to execute
+// and statically cache any of these at build time. Without this, a
+// GET-only handler with no request-specific reads can get silently
+// picked up for static optimization and run during `next build`,
+// which crashes the whole build if the DB isn't reachable from the
+// build environment (e.g. Netlify's build servers).
+export const dynamic = "force-dynamic";
+
 export const POST = withHandler<Ctx>(async (req: NextRequest, ctx) => {
   await connectDB();
   const authUser = await requireAuth(req);
