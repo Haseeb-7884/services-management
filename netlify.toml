@@ -1,0 +1,12 @@
+[build]
+  # Repo root now IS the Next.js app (client/ and server/ no longer exist).
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  # Netlify's official Next.js adapter - turns API routes / SSR pages into
+  # Netlify Functions automatically and serves static assets from the CDN.
+  # Without this (or without Netlify auto-detecting it), Netlify has no idea
+  # how to run a Next.js app and falls back to serving nothing, which is why
+  # every route 404s.
+  package = "@netlify/plugin-nextjs"
