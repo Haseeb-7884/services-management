@@ -3,6 +3,17 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  # This Netlify site was originally created for the old Vite/Express app
+  # and may still have an old Node version pinned from that setup. Without
+  # an explicit version, Netlify's default (or a stale cached one) applies
+  # to BOTH the build AND the deployed Functions runtime - and an
+  # OpenSSL/Node-version mismatch there is a known source of exactly the
+  # "SSL alert internal error" TLS handshake failures seen when connecting
+  # to MongoDB Atlas. Pin to a modern LTS so build and runtime match what
+  # Next.js 16 and the current mongodb driver actually expect.
+  NODE_VERSION = "22"
+
 [[plugins]]
   # Netlify's official Next.js adapter - turns API routes / SSR pages into
   # Netlify Functions automatically and serves static assets from the CDN.
