@@ -4,38 +4,42 @@ import tls from "node:tls";
 import mongoose from "mongoose";
 import { env } from "./env";
 
-// `mongodb+srv://` connection strings require a DNS SRV + TXT lookup before
-// any actual database connection happens. Plenty of ISP/router-provided DNS
-// resolvers don't support SRV record queries at all and fail with
-// "querySrv ECONNREFUSED" - which has nothing to do with credentials, IP
-// allowlists, or anything Mongo-side. Forcing Node to use public DNS
-// resolvers that are known to support SRV lookups sidesteps that entirely,
-// without requiring any OS-level network settings changes.
-dns.setServers(["1.1.1.1", "8.8.8.8", "1.0.0.1", "8.8.4.4"]);
+// IMPORTANT: none of the DNS/TLS overrides below run by default anymore.
+// They exist only as fallbacks for specific broken-network symptoms (see
+// each function below) and are applied lazily, only after a plain
+// `mongoose.connect()` with Node's normal defaults has already failed with
+// a matching error signature. Earlier this file applied `dns.setServers()`
+// and a custom TLS `secureContext` unconditionally, at module load time,
+// on every environment - which fixed one specific home-network problem but
+// broke connections on hosts (e.g. Netlify Functions) where the plain
+// defaults would otherwise have "just worked" like any other Next.js +
+// Mongo deployment. Always try the boring, standard path first.
 
-// Prefer IPv4 for the actual shard host connections (not the SRV/TXT lookup
-// itself). Broken or partially-configured IPv6 routes are a common,
-// project-agnostic-looking cause of TLS handshakes failing with a generic
-// "internal error" alert on some home/campus networks - the handshake
-// reaches the server over IPv6 and dies partway through, which looks
-// identical to a driver/credentials bug from the Node side.
-dns.setDefaultResultOrder("ipv4first");
+let dnsOverrideApplied = false;
+function applyHomeNetworkDnsOverride() {
+  if (dnsOverrideApplied) return;
+  dnsOverrideApplied = true;
+  // `mongodb+srv://` connection strings require a DNS SRV + TXT lookup
+  // before any actual database connection happens. Plenty of ISP/router
+  // DNS resolvers don't support SRV record queries at all and fail with
+  // "querySrv ECONNREFUSED" - nothing to do with credentials or IP
+  // allowlists. Forcing Node to use public resolvers that do support SRV
+  // lookups sidesteps that, without any OS-level network changes.
+  dns.setServers(["1.1.1.1", "8.8.8.8", "1.0.0.1", "8.8.4.4"]);
+  // Prefer IPv4 for the actual shard host connections. Broken/partial IPv6
+  // routes are a common cause of TLS handshakes dying with a generic
+  // "internal error" alert on some home/campus networks.
+  dns.setDefaultResultOrder("ipv4first");
+}
 
 // Node 17+ ships OpenSSL 3.0, which by default refuses to complete a TLS
-// handshake with any peer that only supports "legacy" (pre-2010) secure
-// renegotiation - and rejects it with a generic, unhelpful alert rather than
-// a clear message. This shows up as "SSL alert number 80 (internal error)"
-// or "unsafe legacy renegotiation disabled" depending on which side notices
-// first. It's a documented, MongoDB-endorsed workaround for exactly this
-// family of Node-driver-vs-network-path TLS failures - see
+// handshake with a peer that only supports "legacy" (pre-2010) secure
+// renegotiation, rejecting it with a generic "SSL alert number 80
+// (internal error)" instead of a clear message. Documented, MongoDB-
+// endorsed workaround for that specific family of failures - see
 // https://www.mongodb.com/docs/drivers/node/current/security/tls/#workaround-for-an--unsafe-legacy-renegotiation-disabled--error
-// Also pin to TLS 1.2 only. TLS 1.3's handshake is structurally different
-// (encrypted extensions, session tickets, 0-RTT) and is a well-known trigger
-// for older DPI/firewall middleboxes to send back a bare "internal error"
-// alert instead of passing the handshake through - which matches this error
-// showing up identically on a completely different connection path (SRV vs
-// direct-to-shard). TLS 1.2 is still fully secure and is what most
-// middleboxes of this kind understand correctly.
+// Only used as a fallback, not the default secureContext, since forcing
+// TLS 1.2-only isn't appropriate on networks that don't need it.
 const legacyRenegotiationSecureContext = tls.createSecureContext({
   secureOptions: crypto.constants.SSL_OP_LEGACY_SERVER_CONNECT,
   minVersion: "TLSv1.2",
@@ -59,8 +63,8 @@ declare global {
 // credentials or Atlas config - the SRV/TXT lookup that `mongodb+srv://`
 // requires never even reaches a DNS server. DNS-over-HTTPS (DoH) resolves
 // the same records over port 443 instead, which almost never gets blocked
-// separately from the rest of the web. When the normal SRV connect fails,
-// we resolve the SRV+TXT records via DoH ourselves and reconnect using the
+// separately from the rest of the web. Used as a last-resort fallback: we
+// resolve the SRV+TXT records via DoH ourselves and reconnect using the
 // equivalent standard `mongodb://host1,host2,host3/...` string, which
 // requires no SRV lookup at all (only ordinary A-record lookups, which are
 // essentially never blocked).
@@ -110,11 +114,24 @@ async function buildStandardUriViaDoH(srvUri: string): Promise<string | null> {
   }
 }
 
-async function connectWithUri(uri: string) {
+function connectPlain(uri: string) {
+  return mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
+}
+
+function connectWithLegacyTlsWorkaround(uri: string) {
   return mongoose.connect(uri, {
     serverSelectionTimeoutMS: 10000,
     secureContext: legacyRenegotiationSecureContext,
   });
+}
+
+// Only worth retrying with the DNS/TLS workarounds for errors that actually
+// look like a DNS-path or TLS-handshake problem. A real auth failure or
+// Atlas IP-allowlist rejection won't be fixed by any of this, so don't burn
+// an extra 10s timeout chasing it.
+function looksLikeDnsOrTlsPathIssue(err: unknown): boolean {
+  const text = String((err as any)?.code ?? (err as Error)?.message ?? err ?? "");
+  return /querySrv|ENOTFOUND|ECONNREFUSED|ETIMEOUT|internal error|legacy renegotiation|SSL alert/i.test(text);
 }
 
 export async function connectDB(): Promise<typeof mongoose> {
@@ -132,24 +149,30 @@ export async function connectDB(): Promise<typeof mongoose> {
     console.error("[db] connection error:", err.message);
   });
 
-  global._mongooseConn = connectWithUri(env.mongodbUri)
+  global._mongooseConn = connectPlain(env.mongodbUri)
     .catch(async (err) => {
-      const isSrvDnsFailure = env.mongodbUri.startsWith("mongodb+srv://") && /querySrv|ENOTFOUND|ECONNREFUSED|ETIMEOUT/i.test(String(err?.code ?? err?.message ?? ""));
+      if (!looksLikeDnsOrTlsPathIssue(err)) throw err;
 
-      if (isSrvDnsFailure) {
-        console.warn("[db] SRV DNS lookup failed (blocked UDP:53?) - retrying via DNS-over-HTTPS fallback...");
-        const fallbackUri = await buildStandardUriViaDoH(env.mongodbUri);
-        if (fallbackUri) {
-          try {
-            const conn = await connectWithUri(fallbackUri);
+      console.warn("[db] plain connect failed with a DNS/TLS-looking error - retrying with home-network workarounds...");
+      applyHomeNetworkDnsOverride();
+      try {
+        const conn = await connectWithLegacyTlsWorkaround(env.mongodbUri);
+        console.log("[db] connected using DNS-override + legacy-TLS fallback");
+        return conn;
+      } catch (retryErr) {
+        if (env.mongodbUri.startsWith("mongodb+srv://") && looksLikeDnsOrTlsPathIssue(retryErr)) {
+          console.warn("[db] SRV DNS lookup still failing (blocked UDP:53?) - retrying via DNS-over-HTTPS fallback...");
+          const fallbackUri = await buildStandardUriViaDoH(env.mongodbUri);
+          if (fallbackUri) {
+            const conn = await connectWithLegacyTlsWorkaround(fallbackUri);
             console.log("[db] connected via DoH-resolved standard connection string");
             return conn;
-          } catch (fallbackErr) {
-            console.error("[db] DoH fallback connection also failed:", fallbackErr instanceof Error ? fallbackErr.message : fallbackErr);
           }
         }
+        throw retryErr;
       }
-
+    })
+    .catch((err) => {
       console.error("=".repeat(70));
       console.error("[db] COULD NOT CONNECT TO MONGODB - common causes:");
       console.error("     1. Atlas free-tier cluster paused itself from inactivity");
@@ -157,8 +180,7 @@ export async function connectDB(): Promise<typeof mongoose> {
       console.error("     2. Network Access list doesn't include your current IP/host");
       console.error("        -> Atlas -> Network Access -> confirm 0.0.0.0/0 is present");
       console.error("     3. MONGODB_URI env var has a stale/wrong password");
-      console.error("     4. Your network is blocking outbound DNS SRV lookups AND DoH");
-      console.error("        (uncommon, but the DoH fallback above already tried to work around it)");
+      console.error("     4. A DNS/TLS network-path issue that even the fallbacks couldn't work around");
       console.error("Raw error:", err instanceof Error ? err.message : err);
       console.error("=".repeat(70));
       global._mongooseConn = undefined; // allow a retry on the next call instead of caching the failure forever
