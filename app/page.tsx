@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BarChart3, Clock, Eye, FileText, Heart, Layers, MessageSquare, Play, ShieldCheck } from "lucide-react";
 import { useBranding } from "@/context/BrandingContext";
@@ -106,7 +107,7 @@ export default function Home() {
       {hero ? (
         <Link href={feedItemHref(hero)} className="relative mb-10 flex h-[420px] overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border-subtle)", boxShadow: "var(--shadow-lg)" }}>
           {hero.thumbnailUrl ? (
-            <img src={hero.thumbnailUrl} alt={hero.title} className="h-full w-full object-cover" />
+            <Image src={hero.thumbnailUrl} alt={hero.title} fill priority sizes="(max-width: 1280px) 100vw, 1280px" className="object-cover" />
           ) : (
             <div className="h-full w-full" style={{ background: "linear-gradient(135deg, var(--brand-text), color-mix(in srgb, var(--brand-text) 70%, var(--brand-primary) 30%))" }} />
           )}
@@ -159,7 +160,7 @@ export default function Home() {
               : trending.map((item) => (
                   <Link key={item.id} href={feedItemHref(item)} className="card-hover w-[220px] shrink-0 cursor-pointer overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border-subtle)", backgroundColor: "var(--surface-card)", boxShadow: "var(--shadow-sm)" }}>
                     <div className="relative h-[130px] bg-[var(--brand-bg-start)]">
-                      {item.thumbnailUrl ? <img src={item.thumbnailUrl} alt={item.title} className="h-full w-full object-cover" /> : <div className="grid h-full w-full place-items-center"><FileText size={22} className="text-[var(--brand-text-muted)]" /></div>}
+                      {item.thumbnailUrl ? <Image src={item.thumbnailUrl} alt={item.title} fill sizes="220px" className="object-cover" /> : <div className="grid h-full w-full place-items-center"><FileText size={22} className="text-[var(--brand-text-muted)]" /></div>}
                       {(item.type === "video" || item.type === "short") && (
                         <>
                           <PlayOverlay size={36} />
@@ -191,7 +192,7 @@ export default function Home() {
               <div key={c._id} className="flex w-[140px] shrink-0 flex-col items-center gap-2.5 text-center">
                 <Link href={`/u/${c.username}`} className="h-20 w-20 overflow-hidden rounded-full border-2" style={{ borderColor: "var(--border-medium)" }}>
                   {c.profile.avatarUrl ? (
-                    <img src={c.profile.avatarUrl} alt={c.profile.displayName || c.username} className="h-full w-full object-cover" />
+                    <Image src={c.profile.avatarUrl} alt={c.profile.displayName || c.username} width={80} height={80} className="h-full w-full object-cover" />
                   ) : (
                     <div className="grid h-full w-full place-items-center text-xl font-bold text-white" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))" }}>
                       {(c.profile.displayName || c.username).charAt(0).toUpperCase()}
@@ -237,7 +238,7 @@ export default function Home() {
               {feed.map((item) => (
                 <Link key={item.id} href={feedItemHref(item)} className="card-hover cursor-pointer overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border-subtle)", backgroundColor: "var(--surface-card)", boxShadow: "var(--shadow-sm)" }}>
                   <div className="relative h-[190px] bg-[var(--brand-bg-start)]">
-                    {item.thumbnailUrl ? <img src={item.thumbnailUrl} alt={item.title} className="h-full w-full object-cover" /> : <div className="grid h-full w-full place-items-center"><FileText size={26} className="text-[var(--brand-text-muted)]" /></div>}
+                    {item.thumbnailUrl ? <Image src={item.thumbnailUrl} alt={item.title} fill sizes="(max-width: 768px) 50vw, 280px" className="object-cover" /> : <div className="grid h-full w-full place-items-center"><FileText size={26} className="text-[var(--brand-text-muted)]" /></div>}
                     {(item.type === "video" || item.type === "short") && (
                       <>
                         <PlayOverlay />
@@ -252,7 +253,7 @@ export default function Home() {
                     <div className="flex items-center justify-between border-t pt-3" style={{ borderColor: "var(--border-subtle)" }}>
                       <span className="flex items-center gap-2">
                         {item.owner.profile?.avatarUrl ? (
-                          <img src={item.owner.profile.avatarUrl} alt="" className="h-7 w-7 rounded-full border object-cover" style={{ borderColor: "var(--border-medium)" }} />
+                          <Image src={item.owner.profile.avatarUrl} alt="" width={28} height={28} className="h-7 w-7 rounded-full border object-cover" style={{ borderColor: "var(--border-medium)" }} />
                         ) : (
                           <span className="grid h-7 w-7 place-items-center rounded-full border text-xs font-bold" style={{ borderColor: "var(--border-medium)", color: "var(--brand-primary)" }}>
                             {(item.owner.profile?.displayName || item.owner.username).charAt(0).toUpperCase()}

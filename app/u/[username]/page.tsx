@@ -139,9 +139,9 @@ export default function Profile() {
 
       <div className="mx-auto max-w-5xl px-4">
         {/* Header */}
-        <div className="relative -mt-12 mb-6">
-          <div className="flex flex-wrap items-center gap-5">
-            <div className="group relative shrink-0">
+        <div className="relative -mt-10 mb-6 sm:-mt-12">
+          <div className="flex flex-wrap items-end gap-5">
+            <div className="group relative z-10 shrink-0">
               <div className="h-28 w-28 overflow-hidden rounded-full border-4" style={{ borderColor: "var(--brand-bg-end)", boxShadow: "0 0 0 2px var(--border-medium)" }}>
                 {profile.profile.avatarUrl ? (
                   <img src={profile.profile.avatarUrl} alt={name} className="h-full w-full object-cover" />

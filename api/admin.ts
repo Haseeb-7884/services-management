@@ -31,6 +31,11 @@ export async function revokeCreator(username: string) {
   return data.data;
 }
 
+export async function updateUserStatus(username: string, status: "active" | "suspended" | "banned") {
+  const { data } = await api.patch<ApiEnvelope<User>>(`/admin/users/${username}/status`, { status });
+  return data.data;
+}
+
 export async function fetchPendingContent(params: { type?: string; page?: number; limit?: number } = {}) {
   const { data } = await api.get<ApiEnvelope<Paginated<PendingContentItem>>>("/admin/content/pending", { params });
   return data.data;

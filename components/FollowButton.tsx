@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check, Loader2, UserPlus } from "lucide-react";
 import { followUser, unfollowUser } from "@/api/users";
 import { getErrorMessage } from "@/api/client";
 import { useAuth } from "@/context/AuthContext";
@@ -36,13 +37,14 @@ export function FollowButton({ username, initiallyFollowed }: { username: string
       <button
         onClick={toggle}
         disabled={busy}
-        className="rounded-md border px-4 py-1.5 text-sm font-medium transition disabled:opacity-50"
+        className="flex items-center gap-1.5 rounded-md border px-4 py-1.5 text-sm font-medium transition-all duration-150 hover:-translate-y-0.5 hover:shadow-sm disabled:pointer-events-none disabled:opacity-60"
         style={
           following
             ? { borderColor: "var(--border-subtle)", color: "var(--brand-text)", backgroundColor: "transparent" }
             : { borderColor: "var(--brand-primary)", backgroundColor: "var(--brand-primary)", color: "var(--brand-bg-start)" }
         }
       >
+        {busy ? <Loader2 size={14} className="animate-spin" /> : following ? <Check size={14} /> : <UserPlus size={14} />}
         {following ? "Following" : "Follow"}
       </button>
       {error && <p className="absolute left-0 top-full mt-1.5 w-max max-w-[220px] text-xs text-red-600">{error}</p>}

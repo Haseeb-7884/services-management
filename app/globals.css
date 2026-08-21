@@ -47,14 +47,101 @@ body {
   box-shadow: 0 8px 24px var(--glow-primary);
   transform: translateY(-1px);
 }
+.btn-glow:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 2px 8px var(--glow-primary);
+}
+
+/* Site-wide button feel: every native <button> gets a quick, tactile press
+   response by default - this is the single global fix for "buttons should
+   feel more engaging" across the whole app, rather than hand-editing every
+   button in every page. Scoped to :not(:disabled) so busy/disabled states
+   (which already show their own loading/opacity treatment) don't also
+   shrink. `:focus-visible` gets a real ring instead of the browser default
+   so keyboard users get the same feedback mouse users get from hover. */
+button:not(:disabled) {
+  transition: transform 120ms ease, opacity 120ms ease, box-shadow 150ms ease, background-color 150ms ease, border-color 150ms ease, filter 150ms ease;
+}
+button:not(:disabled):active {
+  transform: scale(0.96);
+}
+button:disabled {
+  cursor: not-allowed;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-left {
+  animation: slideInLeft 200ms ease-out;
+}
 
 .card-hover {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  /* A brand-tinted glow instead of a flat gray shadow - this, plus the
+     rules below, is the actual "color scheme interaction" fix: hovering
+     anything now visibly reacts in the site's own colors instead of just
+     nudging a neutral shadow/opacity. */
+  box-shadow: 0 12px 28px var(--glow-primary);
   border-color: var(--border-highlight);
+}
+
+/* Any solid-color button (inline-styled brand backgrounds included - this
+   is a filter, so it works no matter how the color was set) gets a
+   brightness/saturation lift on hover instead of looking static. */
+button:not(:disabled):hover {
+  filter: brightness(1.07) saturate(1.12);
+}
+
+/* Colored focus ring on every text input/textarea/select site-wide - a lot
+   more noticeable "the site responded to me" than the 1px border-color
+   swap these forms had before. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px var(--glow-primary);
+}
+
+/* Plain links (nav items, footer links, "View all" style text links) that
+   don't already set their own hover color fall back to a brand-color
+   shift instead of doing nothing. Inline-styled CTA buttons/links (e.g.
+   solid brand-color pills with light text) are unaffected - an inline
+   `style` always wins over this rule, so their contrast stays intact. */
+a {
+  transition: color 150ms ease;
+}
+a:hover {
+  color: var(--brand-primary);
 }
 
 .scrollbar-none {

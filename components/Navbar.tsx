@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -171,7 +172,7 @@ export function Navbar() {
 
           <Link href="/" className="flex shrink-0 items-center gap-2 font-semibold">
             {branding.logoUrl ? (
-              <img src={branding.logoUrl} alt={branding.siteName} className="h-9 w-9 rounded-xl object-cover" />
+              <Image src={branding.logoUrl} alt={branding.siteName} width={36} height={36} priority className="h-9 w-9 rounded-xl object-cover" />
             ) : (
               <span
                 className="grid h-9 w-9 place-items-center rounded-xl text-sm font-bold"
@@ -273,7 +274,7 @@ export function Navbar() {
                 <div className="relative ml-0.5" ref={menuRef}>
                   <button onClick={() => setMenuOpen((v) => !v)} className="flex items-center gap-1 rounded-full py-0.5 pl-0.5 pr-1 transition hover:bg-[var(--surface-card-hover)] sm:pr-1.5">
                     <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full border text-sm font-semibold" style={{ borderColor: "var(--border-medium)", color: "var(--brand-primary)" }}>
-                      {user.profile.avatarUrl ? <img src={user.profile.avatarUrl} alt={displayName} className="h-full w-full object-cover" /> : initialsOf(displayName)}
+                      {user.profile.avatarUrl ? <Image src={user.profile.avatarUrl} alt={displayName} width={32} height={32} className="h-full w-full object-cover" /> : initialsOf(displayName)}
                     </span>
                     <ChevronDown size={14} className={`hidden text-[var(--brand-text-muted)] transition-transform sm:block ${menuOpen ? "rotate-180" : ""}`} />
                   </button>
@@ -353,7 +354,7 @@ export function Navbar() {
             <div className="mb-3 flex items-center justify-between px-1">
               <Link href="/" onClick={() => setDrawerOpen(false)} className="flex items-center gap-2 font-semibold">
                 {branding.logoUrl ? (
-                  <img src={branding.logoUrl} alt={branding.siteName} className="h-8 w-8 rounded-lg object-cover" />
+                  <Image src={branding.logoUrl} alt={branding.siteName} width={32} height={32} className="h-8 w-8 rounded-lg object-cover" />
                 ) : (
                   <span className="grid h-8 w-8 place-items-center rounded-lg text-xs font-bold" style={{ background: "linear-gradient(135deg, var(--brand-primary), var(--brand-secondary))", color: "var(--brand-bg-start)" }}>
                     {initialsOf(branding.siteName)}
