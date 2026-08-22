@@ -1,5 +1,5 @@
 import { api } from "./client";
-import type { AdminStats, AdminUserRow, ApiEnvelope, Paginated, PendingContentItem, User } from "@/types";
+import type { AdminContentItem, AdminStats, AdminUserRow, ApiEnvelope, Paginated, PendingContentItem, User } from "@/types";
 
 export async function fetchAdminStats() {
   const { data } = await api.get<ApiEnvelope<AdminStats>>("/admin/stats");
@@ -33,6 +33,11 @@ export async function revokeCreator(username: string) {
 
 export async function updateUserStatus(username: string, status: "active" | "suspended" | "banned") {
   const { data } = await api.patch<ApiEnvelope<User>>(`/admin/users/${username}/status`, { status });
+  return data.data;
+}
+
+export async function fetchAllContent(params: { type?: string; status?: string; search?: string; page?: number; limit?: number } = {}) {
+  const { data } = await api.get<ApiEnvelope<Paginated<AdminContentItem>>>("/admin/content", { params });
   return data.data;
 }
 

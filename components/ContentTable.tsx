@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FileText, Trash2 } from "lucide-react";
+import { useConfirm } from "@/components/ConfirmDialog";
 import type { DashboardContentItem } from "@/types";
 
 const STATUS_STYLE: Record<DashboardContentItem["status"], { bg: string; color: string; label: string }> = {
@@ -19,10 +20,12 @@ function contentHref(row: DashboardContentItem) {
 
 export function ContentTable({ rows, onDelete }: { rows: DashboardContentItem[]; onDelete?: (row: DashboardContentItem) => Promise<void> }) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const confirm = useConfirm();
 
   const handleDelete = async (row: DashboardContentItem) => {
     if (!onDelete) return;
-    if (!window.confirm(`Delete "${row.title || "this item"}"? This can't be undone.`)) return;
+    const confirmed = await confirm({ message: `Delete "${row.title || "this item"}"? This can't be undone.`, danger: true });
+    if (!confirmed) return;
     setDeletingId(row.id);
     try {
       await onDelete(row);

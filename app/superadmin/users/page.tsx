@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, RotateCcw, Search, ShieldAlert, ShieldOff, U
 import { fetchUsers, updateUserStatus } from "@/api/admin";
 import { getErrorMessage } from "@/api/client";
 import { useAuth } from "@/context/AuthContext";
+import { useConfirm } from "@/components/ConfirmDialog";
 import type { AdminUserRow, Role } from "@/types";
 
 const ROLE_FILTERS: { label: string; value: Role | "" }[] = [
@@ -36,6 +37,7 @@ export default function SuperAdminUsers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
+  const confirm = useConfirm();
 
   const [roleFilter, setRoleFilter] = useState<Role | "">("");
   const [searchInput, setSearchInput] = useState("");
@@ -219,8 +221,13 @@ export default function SuperAdminUsers() {
                             )}
                             {u.status !== "banned" && (
                               <button
-                                onClick={() => {
-                                  if (window.confirm(`Ban @${u.username}? They will be immediately signed out and unable to log back in.`)) handleStatusChange(u, "banned");
+                                onClick={async () => {
+                                  const confirmed = await confirm({
+                                    message: `Ban @${u.username}? They will be immediately signed out and unable to log back in.`,
+                                    confirmLabel: "Ban",
+                                    danger: true,
+                                  });
+                                  if (confirmed) handleStatusChange(u, "banned");
                                 }}
                                 disabled={busy === u.username}
                                 className="flex items-center gap-1 rounded-lg border px-2.5 py-1 text-xs font-semibold text-red-600 transition-all duration-150 hover:bg-red-50 active:scale-95 disabled:opacity-50"

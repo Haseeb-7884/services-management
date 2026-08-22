@@ -6,6 +6,7 @@ import { ok } from "../../../../lib/ApiResponse";
 import { withHandler } from "../../../../lib/handler";
 import { requireAuth } from "../../../../lib/auth";
 import { isModeratorOrAbove } from "../../../../lib/moderation";
+import { deleteCloudinaryAsset } from "../../../../lib/cloudinary";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -40,6 +41,10 @@ export const DELETE = withHandler<Ctx>(async (req: NextRequest, ctx) => {
   const isOwner = String(video.owner) === user.id;
   if (!isOwner && !isModeratorOrAbove(user.role)) throw ApiError.forbidden();
 
+  // Delete the actual file from Cloudinary first (best-effort, never
+  // throws - see lib/cloudinary.ts) so a video never lingers as billable
+  // storage after it's gone from the site, then remove the DB record.
+  await deleteCloudinaryAsset(video.url, "video");
   await video.deleteOne();
   return ok(null, "Video deleted");
 });

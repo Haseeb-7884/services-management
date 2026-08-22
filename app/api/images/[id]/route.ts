@@ -6,6 +6,7 @@ import { ok } from "../../../../lib/ApiResponse";
 import { withHandler } from "../../../../lib/handler";
 import { requireAuth } from "../../../../lib/auth";
 import { isModeratorOrAbove } from "../../../../lib/moderation";
+import { deleteCloudinaryAsset } from "../../../../lib/cloudinary";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -40,6 +41,7 @@ export const DELETE = withHandler<Ctx>(async (req: NextRequest, ctx) => {
   const isOwner = String(image.owner) === user.id;
   if (!isOwner && !isModeratorOrAbove(user.role)) throw ApiError.forbidden();
 
+  await deleteCloudinaryAsset(image.url, "image");
   await image.deleteOne();
   return ok(null, "Image deleted");
 });

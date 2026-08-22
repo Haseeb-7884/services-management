@@ -36,6 +36,43 @@ export function signUploadParams(params: Record<string, string | number>) {
 }
 
 /**
+ * Extracts the Cloudinary public_id (including folder prefix, e.g.
+ * "platform/videos/abc123") out of a secure_url so it can be deleted.
+ * Cloudinary never gives us the public_id back after upload apart from
+ * inside the URL itself, and we never stored it separately on the Video/
+ * Image/Article documents - it's fully recoverable from the URL as long as
+ * no transformation segments were added (we never add any, see
+ * api/uploads.ts), so parsing it back out is safe rather than a hack.
+ * URL shape: https://res.cloudinary.com/<cloud>/<resource_type>/upload/v<version>/<public_id>.<ext>
+ */
+function publicIdFromUrl(url: string): string | null {
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[a-zA-Z0-9]+)?$/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Best-effort delete of the actual asset bytes from Cloudinary storage.
+ * Deliberately never throws - if Cloudinary is briefly unreachable we still
+ * want the DB record (and therefore the content's visibility on the site)
+ * to go away immediately; a failed remote-asset cleanup just leaves an
+ * orphaned file in Cloudinary, which is a much smaller problem than a
+ * "deleted" item that silently fails to delete at all. Callers should still
+ * check the return value if they want to warn an admin about leftovers.
+ */
+export async function deleteCloudinaryAsset(url: string | undefined | null, resourceType: "video" | "image"): Promise<boolean> {
+  if (!url || !env.cloudinary.isConfigured) return false;
+  const publicId = publicIdFromUrl(url);
+  if (!publicId) return false;
+  try {
+    const result = await cloudinary.uploader.destroy(publicId, { resource_type: resourceType, invalidate: true });
+    return result?.result === "ok" || result?.result === "not found";
+  } catch (err) {
+    console.error(`[cloudinary] failed to delete asset ${publicId}:`, err instanceof Error ? err.message : err);
+    return false;
+  }
+}
+
+/**
  * Derives a thumbnail image URL for a video already uploaded to Cloudinary,
  * with no separate upload or transformation call. Cloudinary generates a
  * frame-capture image on the fly whenever a video delivery URL's file

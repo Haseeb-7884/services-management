@@ -17,8 +17,22 @@ import { PERMISSIONS } from "../../../lib/constants/roles";
 // build environment (e.g. Netlify's build servers).
 export const dynamic = "force-dynamic";
 
-export const GET = withHandler(async () => {
+export const GET = withHandler(async (req: NextRequest) => {
   await connectDB();
+
+  // Public pricing page only ever wants active plans - but the SuperAdmin
+  // plans manager needs to see deactivated ones too (so they can be
+  // reactivated instead of recreated from scratch). Gate that wider view
+  // behind the same permission the write routes below already require,
+  // rather than exposing every plan to anyone who adds a query param.
+  const wantsAll = req.nextUrl.searchParams.get("all") === "true";
+  if (wantsAll) {
+    const user = await requireAuth(req);
+    requirePermission(user, PERMISSIONS.MANAGE_SUBSCRIPTION_PLANS);
+    const plans = await SubscriptionPlan.find({}).sort({ order: 1, monthly: 1 });
+    return ok(plans);
+  }
+
   const plans = await SubscriptionPlan.find({ isActive: true }).sort({ order: 1, monthly: 1 });
   return ok(plans);
 });

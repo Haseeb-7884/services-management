@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BarChart3, Clock, Eye, FileText, Heart, Layers, MessageSquare, Play, ShieldCheck } from "lucide-react";
 import { useBranding } from "@/context/BrandingContext";
+import { useAuth } from "@/context/AuthContext";
 import { fetchFeaturedCreators, fetchFeed, fetchPlatformStats, fetchTrending } from "@/api/feed";
 import { FollowButton } from "@/components/FollowButton";
 import { formatCount, formatDuration, formatRelativeTime } from "@/utils/format";
@@ -63,6 +64,7 @@ function feedItemHref(item: FeedItem) {
 
 export default function Home() {
   const { branding } = useBranding();
+  const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState("All");
 
   const [trending, setTrending] = useState<FeedItem[]>([]);
@@ -119,7 +121,19 @@ export default function Home() {
             <h1 className="font-display mb-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl">{hero.title}</h1>
             {hero.excerpt && <p className="mb-6 text-sm leading-relaxed text-white/85 sm:text-base line-clamp-2">{hero.excerpt}</p>}
             <div className="btn-glow inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold" style={{ backgroundColor: "var(--brand-primary)", color: "var(--brand-bg-start)" }}>
-              {hero.type === "article" ? <><FileText size={16} /> Read now</> : <><Play size={16} fill="#fff" /> Watch now</>}
+              {hero.type === "article" ? (
+                <>
+                  <FileText size={16} /> Read now
+                </>
+              ) : hero.type === "image" ? (
+                <>
+                  <Eye size={16} /> View image
+                </>
+              ) : (
+                <>
+                  <Play size={16} fill="#fff" /> Watch now
+                </>
+              )}
             </div>
           </div>
         </Link>
@@ -147,40 +161,6 @@ export default function Home() {
           </button>
         ))}
       </div>
-
-      {(trendingLoading || trending.length > 0) && (
-        <section className="mb-10">
-          <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-xl font-bold text-[var(--brand-text)]">Trending Now</h2>
-            <Link href="/videos" className="text-sm font-semibold text-[var(--brand-primary)]">See all →</Link>
-          </div>
-          <div className="scrollbar-none flex gap-4 overflow-x-auto pb-2">
-            {trendingLoading
-              ? Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-[195px] w-[220px] shrink-0 animate-pulse rounded-2xl" style={{ backgroundColor: "var(--surface-card)" }} />)
-              : trending.map((item) => (
-                  <Link key={item.id} href={feedItemHref(item)} className="card-hover w-[220px] shrink-0 cursor-pointer overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border-subtle)", backgroundColor: "var(--surface-card)", boxShadow: "var(--shadow-sm)" }}>
-                    <div className="relative h-[130px] bg-[var(--brand-bg-start)]">
-                      {item.thumbnailUrl ? <Image src={item.thumbnailUrl} alt={item.title} fill sizes="220px" className="object-cover" /> : <div className="grid h-full w-full place-items-center"><FileText size={22} className="text-[var(--brand-text-muted)]" /></div>}
-                      {(item.type === "video" || item.type === "short") && (
-                        <>
-                          <PlayOverlay size={36} />
-                          {Boolean(item.durationSec) && <span className="absolute bottom-2 right-2 rounded bg-black/75 px-1.5 py-0.5 text-[11px] font-semibold text-white">{formatDuration(item.durationSec)}</span>}
-                        </>
-                      )}
-                      <TypeBadge type={item.type} />
-                    </div>
-                    <div className="p-3.5">
-                      <p className="mb-2 line-clamp-2 text-[13px] font-semibold text-[var(--brand-text)]">{item.title}</p>
-                      <div className="flex items-center justify-between text-xs text-[var(--brand-text-muted)]">
-                        <span>{item.owner.profile?.displayName || item.owner.username}</span>
-                        <span className="flex items-center gap-1"><Eye size={11} /> {formatCount(item.views)}</span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-          </div>
-        </section>
-      )}
 
       {creators.length > 0 && (
         <section className="mb-10">
@@ -219,6 +199,40 @@ export default function Home() {
             </div>
           ))}
         </div>
+      )}
+
+      {(trendingLoading || trending.length > 0) && (
+        <section className="mb-10">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-[var(--brand-text)]">Trending Now</h2>
+            <Link href="/videos" className="text-sm font-semibold text-[var(--brand-primary)]">See all →</Link>
+          </div>
+          <div className="scrollbar-none flex gap-4 overflow-x-auto pb-2">
+            {trendingLoading
+              ? Array.from({ length: 5 }).map((_, i) => <div key={i} className="h-[195px] w-[220px] shrink-0 animate-pulse rounded-2xl" style={{ backgroundColor: "var(--surface-card)" }} />)
+              : trending.map((item) => (
+                  <Link key={item.id} href={feedItemHref(item)} className="card-hover w-[220px] shrink-0 cursor-pointer overflow-hidden rounded-2xl border" style={{ borderColor: "var(--border-subtle)", backgroundColor: "var(--surface-card)", boxShadow: "var(--shadow-sm)" }}>
+                    <div className="relative h-[130px] bg-[var(--brand-bg-start)]">
+                      {item.thumbnailUrl ? <Image src={item.thumbnailUrl} alt={item.title} fill sizes="220px" className="object-cover" /> : <div className="grid h-full w-full place-items-center"><FileText size={22} className="text-[var(--brand-text-muted)]" /></div>}
+                      {(item.type === "video" || item.type === "short") && (
+                        <>
+                          <PlayOverlay size={36} />
+                          {Boolean(item.durationSec) && <span className="absolute bottom-2 right-2 rounded bg-black/75 px-1.5 py-0.5 text-[11px] font-semibold text-white">{formatDuration(item.durationSec)}</span>}
+                        </>
+                      )}
+                      <TypeBadge type={item.type} />
+                    </div>
+                    <div className="p-3.5">
+                      <p className="mb-2 line-clamp-2 text-[13px] font-semibold text-[var(--brand-text)]">{item.title}</p>
+                      <div className="flex items-center justify-between text-xs text-[var(--brand-text-muted)]">
+                        <span>{item.owner.profile?.displayName || item.owner.username}</span>
+                        <span className="flex items-center gap-1"><Eye size={11} /> {formatCount(item.views)}</span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+          </div>
+        </section>
       )}
 
       <section>
@@ -304,14 +318,29 @@ export default function Home() {
 
       <section className="relative mt-16 overflow-hidden rounded-3xl p-10 text-center sm:p-14" style={{ background: "linear-gradient(160deg, var(--brand-text), color-mix(in srgb, var(--brand-text) 80%, black))" }}>
         <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full opacity-20 blur-3xl" style={{ backgroundColor: "var(--brand-primary)" }} />
-        <h2 className="font-display relative mb-3 text-2xl font-extrabold text-white sm:text-3xl">Ready to grow your audience?</h2>
-        <p className="relative mx-auto mb-7 max-w-md text-sm text-white/70 sm:text-base">Join {branding.siteName} today and start publishing to a home built for creators, not algorithms.</p>
-        <div className="relative flex flex-wrap items-center justify-center gap-3">
-          <Link href="/register" className="btn-glow flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold" style={{ backgroundColor: "var(--brand-primary)", color: "var(--brand-bg-start)" }}>
-            Get started free <ArrowRight size={16} />
-          </Link>
-          <Link href="/pricing" className="rounded-lg border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm">View plans</Link>
-        </div>
+        {user ? (
+          <>
+            <h2 className="font-display relative mb-3 text-2xl font-extrabold text-white sm:text-3xl">Ready to publish something new?</h2>
+            <p className="relative mx-auto mb-7 max-w-md text-sm text-white/70 sm:text-base">Jump back into your channel and keep growing your audience on {branding.siteName}.</p>
+            <div className="relative flex flex-wrap items-center justify-center gap-3">
+              <Link href="/upload" className="btn-glow flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold" style={{ backgroundColor: "var(--brand-primary)", color: "var(--brand-bg-start)" }}>
+                Upload content <ArrowRight size={16} />
+              </Link>
+              <Link href="/dashboard" className="rounded-lg border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm">Go to dashboard</Link>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 className="font-display relative mb-3 text-2xl font-extrabold text-white sm:text-3xl">Ready to grow your audience?</h2>
+            <p className="relative mx-auto mb-7 max-w-md text-sm text-white/70 sm:text-base">Join {branding.siteName} today and start publishing to a home built for creators, not algorithms.</p>
+            <div className="relative flex flex-wrap items-center justify-center gap-3">
+              <Link href="/register" className="btn-glow flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold" style={{ backgroundColor: "var(--brand-primary)", color: "var(--brand-bg-start)" }}>
+                Get started free <ArrowRight size={16} />
+              </Link>
+              <Link href="/pricing" className="rounded-lg border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm">View plans</Link>
+            </div>
+          </>
+        )}
       </section>
     </div>
   );

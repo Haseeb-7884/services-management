@@ -263,6 +263,17 @@ export interface PendingContentItem {
   createdAt: string;
 }
 
+export interface AdminContentItem {
+  id: string;
+  contentType: "video" | "image" | "article";
+  title: string;
+  thumbnailUrl: string;
+  status: "pending" | "approved" | "rejected";
+  views: number;
+  owner: Pick<User, "username" | "profile">;
+  createdAt: string;
+}
+
 export interface ApiEnvelope<T> {
   success: boolean;
   message: string;

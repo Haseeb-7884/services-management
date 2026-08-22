@@ -6,6 +6,7 @@ import { ok } from "../../../../lib/ApiResponse";
 import { withHandler } from "../../../../lib/handler";
 import { requireAuth } from "../../../../lib/auth";
 import { isModeratorOrAbove } from "../../../../lib/moderation";
+import { deleteCloudinaryAsset } from "../../../../lib/cloudinary";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -40,6 +41,9 @@ export const DELETE = withHandler<Ctx>(async (req: NextRequest, ctx) => {
   const isOwner = String(article.owner) === user.id;
   if (!isOwner && !isModeratorOrAbove(user.role)) throw ApiError.forbidden();
 
+  // Cover image is optional - deleteCloudinaryAsset() is a no-op for an
+  // empty/missing URL.
+  await deleteCloudinaryAsset(article.coverImageUrl, "image");
   await article.deleteOne();
   return ok(null, "Article deleted");
 });

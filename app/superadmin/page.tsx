@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ClipboardList, ShieldCheck, Sparkles, UserCog, Users } from "lucide-react";
+import { ArrowRight, ClipboardList, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { fetchAdminStats } from "@/api/admin";
 import type { AdminStats } from "@/types";
 
@@ -58,6 +58,8 @@ export default function SuperAdminOverview() {
         <div className="flex flex-wrap gap-2">
           {[
             { label: "Manage all users", href: "/superadmin/users" },
+            { label: "Manage content", href: "/superadmin/content" },
+            { label: "Pricing plans", href: "/superadmin/plans" },
             { label: "Admin slots", href: "/superadmin/admins" },
             { label: "Creator status", href: "/superadmin/creators" },
             { label: "Moderation queue", href: "/superadmin/moderation" },

@@ -32,15 +32,21 @@ export const GET = withHandler(async (req: NextRequest) => {
   const wantsImages = type === "all" || type === "image";
   const wantsArticles = type === "all" || type === "article";
 
+  // Capped like /api/feed and /api/admin/content - merging three
+  // collections into one page means true DB-level skip/limit isn't
+  // possible, so each is bounded to "enough for every page up to this
+  // one" instead of fetching the entire pending queue every time.
+  const fetchCap = pageNum * limitNum + 60;
+
   const [videos, images, articles] = await Promise.all([
     wantsVideos
-      ? Video.find({ status: "pending" }).populate("owner", "username profile.displayName").sort({ createdAt: -1 })
+      ? Video.find({ status: "pending" }).select("title thumbnailUrl createdAt owner").populate("owner", "username profile.displayName").sort({ createdAt: -1 }).limit(fetchCap).lean()
       : [],
     wantsImages
-      ? Image.find({ status: "pending" }).populate("owner", "username profile.displayName").sort({ createdAt: -1 })
+      ? Image.find({ status: "pending" }).select("caption url createdAt owner").populate("owner", "username profile.displayName").sort({ createdAt: -1 }).limit(fetchCap).lean()
       : [],
     wantsArticles
-      ? Article.find({ status: "pending" }).populate("owner", "username profile.displayName").sort({ createdAt: -1 })
+      ? Article.find({ status: "pending" }).select("title coverImageUrl createdAt owner").populate("owner", "username profile.displayName").sort({ createdAt: -1 }).limit(fetchCap).lean()
       : [],
   ]);
 
@@ -69,7 +75,7 @@ export const GET = withHandler(async (req: NextRequest) => {
       owner: a.owner,
       createdAt: a.createdAt,
     })),
-  ].sort((a, b) => new Date(a.createdAt as any).getTime() - new Date(b.createdAt as any).getTime()); // oldest first
+  ].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()); // oldest first
 
   const total = items.length;
   const paged = items.slice((pageNum - 1) * limitNum, pageNum * limitNum);

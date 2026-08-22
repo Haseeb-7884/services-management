@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, LayoutDashboard, Menu, ShieldCheck, Sparkles, UserCog, Users, X } from "lucide-react";
+import { ClipboardList, Film, LayoutDashboard, Menu, ShieldCheck, Sparkles, Tag, UserCog, Users, X } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useSeo } from "@/hooks/useSeo";
@@ -14,8 +14,10 @@ const SUPER_ADMIN_ROLES: Role[] = ["super_admin", "owner"];
 const NAV_ITEMS = [
   { icon: LayoutDashboard, label: "Overview", href: "/superadmin", end: true },
   { icon: Users, label: "Users", href: "/superadmin/users", end: false },
+  { icon: Film, label: "Content", href: "/superadmin/content", end: false },
   { icon: UserCog, label: "Admins", href: "/superadmin/admins", end: false },
   { icon: Sparkles, label: "Creators", href: "/superadmin/creators", end: false },
+  { icon: Tag, label: "Plans", href: "/superadmin/plans", end: false },
   { icon: ClipboardList, label: "Moderation", href: "/superadmin/moderation", end: false },
 ];
 
